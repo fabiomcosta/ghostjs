@@ -5,6 +5,7 @@ var toString = Object.prototype.toString;
 var typeOf = function(obj){
     return toString.call(obj).match(/^\[\w+\s+(\w+)\]$/)[1].toLowerCase();
 };
+
 var repeat = function(times, pattern){
     if (times <= 0) return '';
     if (pattern == null) pattern = ' ';
@@ -14,9 +15,11 @@ var repeat = function(times, pattern){
     }
     return pattern;
 };
+
 var hasClass = function(element, _class){
     return new RegExp('(^|\\s)'+ _class +'(\\s|$)').test(element.className);
 };
+
 var print = function(args, level){
     var str = [];
     for (var i = 0; i < args.length; i++){
@@ -43,6 +46,7 @@ var print = function(args, level){
     }
     return str;
 };
+
 var pprint = function(){
     var args = slice.call(arguments, 0);
     console.log(print(args, 0).join('\n'));
@@ -60,7 +64,7 @@ var jasmine = {
         return !!find('.jasmine_reporter');
     },
     finished: function(){
-        return !!find('.finished-at');
+        return !!find('.finished-at').innerText;
     },
     failed: function(){
         return !!find('.jasmine_reporter > .runner.failed');
@@ -99,10 +103,12 @@ var jasmine = {
         return {specs: stats[1], failures: stats[2], time: parseFloat(stats[3])};
     }
 };
+
 var suites = {
     jasmine: jasmine
     //qunit: qunit
 };
+
 var detectSuite = function(){
     for (var name in suites){
         if (suites[name].isItMe()){
@@ -111,6 +117,7 @@ var detectSuite = function(){
     }
     throw new Error('The test suite could not be detected. Supported suites are: '+ suites.keys());
 };
+
 var p = function(obj, buffer, level){
     for (desc in obj){
         buffer.push(repeat(level*2) + desc);
@@ -127,6 +134,7 @@ var p = function(obj, buffer, level){
     }
     return buffer;
 };
+
 var report = function(errors){
     var ret = [];
     for (var i = 0; i < errors.length; i++){
@@ -136,6 +144,7 @@ var report = function(errors){
 };
 
 var suite = detectSuite();
+
 window.setInterval(function(){
     if (suite.finished()){
         if (suite.failed()){
